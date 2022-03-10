@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:sdab_jomreang/models/image.dart' as image;
 
 class ImagesView extends StatefulWidget {
@@ -71,6 +72,41 @@ class _ImagesViewState extends State<ImagesView> {
           ),
         )
       ],
+    );
+  }
+}
+
+class ImageView extends StatelessWidget {
+  const ImageView({
+    Key? key,
+    required this.displayImage,
+  }) : super(key: key);
+
+  final image.Image displayImage;
+
+  @override
+  Widget build(BuildContext context) {
+    return AspectRatio(
+      aspectRatio: 1 / 1,
+      child: CachedNetworkImage(
+        imageUrl: displayImage.imageUrl,
+        fit: BoxFit.cover,
+        fadeInDuration: Duration(milliseconds: 100),
+        fadeOutDuration: Duration(milliseconds: 100),
+        // width: Get.width / 2,
+        progressIndicatorBuilder: (context, url, progress) {
+          if (progress.progress == null) {
+            return Container();
+          }
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+        errorWidget: (context, url, error) => Tab(
+          text: "Error",
+          icon: Icon(Icons.error),
+        ),
+      ),
     );
   }
 }
