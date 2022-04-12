@@ -21,6 +21,8 @@
 </head>
 <body>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.8.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js";
   const firebaseConfig = {
@@ -29,7 +31,8 @@
     projectId: "sdabjomreang-961c4",
     storageBucket: "sdabjomreang-961c4.appspot.com",
     messagingSenderId: "1062797921318",
-    appId: "1:1062797921318:web:ea08016fa1563f7f2b2ae7"
+    appId: "1:1062797921318:web:ea08016fa1563f7f2b2ae7",
+    databaseURL: "https://sdabjomreang-961c4.firebaseio.com",
   };
 
   // Initialize Firebase
@@ -37,6 +40,7 @@
 
 
 </script>
+<script type="text/javascript" src="https://unpkg.com/mediainfo.js/dist/mediainfo.min.js"></script>
 <script>
     var serviceWorkerVersion = null;
     var scriptLoaded = false;

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 const String imageDir = "assets/images/";
 const String userCollection = "users";
-const String itemCollection = "items";
+const String musicCollection = "music";
 const String additionalCollection = "additionInfo";
 const String saveItemCollection = "saveItems";
 const String recentViewItemCollection = "recentView";
@@ -27,6 +28,44 @@ String? validatePhoneNumber(String? value) {
     return 'Incorrect Phone Format';
   }
   return null;
+}
+
+final time = DateFormat('mm:ss');
+
+String formatDateTimeFromInt(int? millisecond) {
+  if (millisecond == null) {
+    return "";
+  }
+
+  final asDateTime = DateTime.fromMillisecondsSinceEpoch(millisecond);
+  final timeAsString = time.format(asDateTime);
+  return timeAsString;
+}
+
+String calDate(int? millisecond) {
+  if (millisecond == null) {
+    return "00:00";
+  }
+  //millisecond to second
+  int amountOfTime = millisecond / 1000 as int;
+  String timeEnd = " seconds";
+  if (amountOfTime > 60) {
+    amountOfTime = amountOfTime / 60 as int;
+    timeEnd = " minutes";
+  }
+
+  return "$amountOfTime" + timeEnd;
+}
+
+String formatTrackArtists (List<String> artists){
+  if(artists.isEmpty){
+    return "";
+  }
+  String result = "";
+  for (String element in artists) {
+    result = result + " $element";
+  }
+  return result;
 }
 
 void showToast(String message) {
