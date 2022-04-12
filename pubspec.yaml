@@ -30,31 +30,42 @@ dependencies:
   flutter:
     sdk: flutter
 
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
+    #  GetX
+  get_storage: ^2.0.3
   get: ^4.3.8
-  http: ^0.13.3
+
+  #  Enhancing UI/UX
+  cupertino_icons: ^1.0.2
+  flutter_countdown_timer: ^4.1.0
+  flutter_local_notifications: ^9.0.2
   flutter_staggered_grid_view: ^0.6.1
+
+
+  #  Image and File
+  extended_image: ^6.0.2+1
+  open_file: ^3.2.1
+  file_picker: ^4.2.7
+  carousel_slider: ^4.0.0
+  dots_indicator: ^2.0.0
+  photo_view: ^0.13.0
+  flutter_svg: ^1.0.0
+
+  # Firebase dependency
   cloud_firestore: ^3.1.4
   firebase_core: ^1.10.5
   firebase_auth: ^3.3.3
-  firebase_storage: ^10.2.3
+  firebase_storage: ^10.2.10
+  #  firebase_messaging: ^11.2.4
+  #  cloud_functions: ^3.2.4
+  #  firebase_analytics: ^9.1.2
+
+  #  Utilities
+  http: ^0.13.3
   intl: ^0.17.0
-  image_picker: ^0.8.3+2
   fluttertoast: ^8.0.8
-  carousel_slider: ^4.0.0
-  dots_indicator: ^2.0.0
-  cached_network_image: 3.2.0
-  photo_view: ^0.13.0
-  otp_text_field: ^1.1.1
-  avatars: ^3.0.2
-  sms_autofill: ^2.2.0
-  flutter_countdown_timer: ^4.1.0
-  flutter_svg: ^1.0.0
-  open_file: ^3.2.1
-  file_picker: ^4.2.7
+  json_annotation: ^4.4.0
+  algolia: ^1.0.5
+  package_info_plus: ^1.4.2
   just_audio: ^0.9.20
 
 dev_dependencies:

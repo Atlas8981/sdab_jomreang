@@ -1,12 +1,16 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sdab_jomreang/models/image.dart' as image;
+import 'package:sdab_jomreang/views/utils/ImageViewerPage.dart';
 
 class ImagesView extends StatefulWidget {
-  const ImagesView({Key? key, required this.images}) : super(key: key);
+  const ImagesView({
+    Key? key,
+    required this.images,
+  }) : super(key: key);
 
   final List<image.Image> images;
 
@@ -26,9 +30,8 @@ class _ImagesViewState extends State<ImagesView> {
       children: [
         CarouselSlider.builder(
           options: CarouselOptions(
-            scrollPhysics: BouncingScrollPhysics(),
+            scrollPhysics: const BouncingScrollPhysics(),
             height: 300,
-            // aspectRatio: 1 / 1,
             viewportFraction: 1,
             initialPage: 0,
             pageSnapping: true,
@@ -43,21 +46,23 @@ class _ImagesViewState extends State<ImagesView> {
           carouselController: carouselController,
           itemCount: images.length,
           itemBuilder: (context, index, realIndex) {
-            return CachedNetworkImage(
-              imageUrl: images[index].imageUrl,
-              fit: BoxFit.cover,
-              fadeInDuration: Duration(milliseconds: 100),
-              fadeOutDuration: Duration(milliseconds: 100),
-              width: double.infinity,
-              progressIndicatorBuilder: (context, url, progress) {
-                if (progress.progress == null) {
-                  return Container();
-                }
-                return Center(
-                  child: CircularProgressIndicator(),
+            return GestureDetector(
+              onTap: () {
+                Get.to(
+                      () => ImageViewerPage(
+                    image: images[index].imageUrl,
+                    tag: "",
+                  ),
                 );
               },
-              errorWidget: (context, url, error) => Icon(Icons.error),
+              child: ExtendedImage.network(
+                images[index].imageUrl,
+                fit: BoxFit.cover,
+                width: double.infinity,
+                clearMemoryCacheIfFailed: true,
+                handleLoadingProgress: true,
+                enableLoadState: true,
+              ),
             );
           },
         ),
@@ -72,41 +77,6 @@ class _ImagesViewState extends State<ImagesView> {
           ),
         )
       ],
-    );
-  }
-}
-
-class ImageView extends StatelessWidget {
-  const ImageView({
-    Key? key,
-    required this.displayImage,
-  }) : super(key: key);
-
-  final image.Image displayImage;
-
-  @override
-  Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 1 / 1,
-      child: CachedNetworkImage(
-        imageUrl: displayImage.imageUrl,
-        fit: BoxFit.cover,
-        fadeInDuration: Duration(milliseconds: 100),
-        fadeOutDuration: Duration(milliseconds: 100),
-        // width: Get.width / 2,
-        progressIndicatorBuilder: (context, url, progress) {
-          if (progress.progress == null) {
-            return Container();
-          }
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-        errorWidget: (context, url, error) => Tab(
-          text: "Error",
-          icon: Icon(Icons.error),
-        ),
-      ),
     );
   }
 }

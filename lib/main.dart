@@ -1,11 +1,21 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sdab_jomreang/views/home_page.dart';
+import 'package:get/get.dart';
+import 'package:sdab_jomreang/colors/CustomColor.dart';
+import 'package:sdab_jomreang/views/HomePage.dart';
+import 'package:sdab_jomreang/views/MusicPlayerPage.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: FirebaseOptions(
+      apiKey: "AIzaSyByZyZNYC115tasIvs4rwD9hTNbKqnCir4",
+      appId: "1:1062797921318:web:ea08016fa1563f7f2b2ae7",
+      messagingSenderId: "1062797921318",
+      projectId: "sdabjomreang-961c4",
+    ),
+  );
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
@@ -21,12 +31,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Personal Spotify',
+    return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Sdab Jomreang',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        colorScheme: ColorScheme.light(
+          secondary: CutomColor.spotifyGreen,
+        ),
       ),
-      darkTheme: ThemeData.dark(),
+      darkTheme: ThemeData.dark().copyWith(
+        colorScheme: ColorScheme.light(
+          primary: Colors.blue,
+          secondary: CutomColor.spotifyGreen,
+        ),
+        iconTheme: IconTheme.of(context).copyWith(
+          color: Colors.white,
+        ),
+      ),
       themeMode: ThemeMode.dark,
       home: const HomePage(),
     );
