@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:sdab_jomreang/colors/CustomColor.dart';
+import 'package:sdab_jomreang/utils/InitialBinding.dart';
 import 'package:sdab_jomreang/views/HomePage.dart';
 
 Future<void> main() async {
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Sdab Jomreang',
+      initialBinding: InitialBinding(),
       theme: ThemeData(
         colorScheme: ColorScheme.light(
           secondary: CutomColor.spotifyGreen,

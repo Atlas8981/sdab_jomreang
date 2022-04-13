@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/current_remaining_time.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:sdab_jomreang/controllers/MusicPlayerController.dart';
 import 'package:sdab_jomreang/models/Image.dart' as image;
 import 'package:sdab_jomreang/utils/Constant.dart';
 
@@ -17,45 +18,15 @@ class MusicPlayerPage extends StatefulWidget {
 }
 
 class _MusicPlayerPageState extends State<MusicPlayerPage> {
-  final player = AudioPlayer();
+  final player = Get.find<MusicPlayerController>().player;
+  final currentSong = Get.find<MusicPlayerController>().currentSong;
   Duration? duration;
   double sliderValue = 0;
-
-  final images = [
-    image.Image(
-      imageName: "imageName",
-      imageUrl: dummyNetworkImage,
-    ),
-  ];
-
-  Future<void> setTrack() async {
-    duration = await player.setAsset("assets/music/merrychristmas.mp3");
-    setState(() {});
-  }
 
   @override
   void initState() {
     super.initState();
-    setTrack();
-    player.playerStateStream.listen((event) {
-      switch (event.processingState) {
-        case ProcessingState.idle:
-          // TODO: Handle this case.
-          break;
-        case ProcessingState.loading:
-          // TODO: Handle this case.
-          break;
-        case ProcessingState.buffering:
-          // TODO: Handle this case.
-          break;
-        case ProcessingState.ready:
-          // TODO: Handle this case.
-          break;
-        case ProcessingState.completed:
-          // TODO: Handle this case.
-          break;
-      }
-    });
+    duration = player.duration;
   }
 
   Widget songImageView() {
@@ -66,11 +37,23 @@ class _MusicPlayerPageState extends State<MusicPlayerPage> {
           Radius.circular(8),
         ),
         child: ExtendedImage.network(
-          images[0].imageUrl,
+          currentSong?.artworkFileUrl ?? "",
           width: double.infinity,
           height: 300,
           fit: BoxFit.cover,
           handleLoadingProgress: true,
+          loadStateChanged: (state) {
+            if (state.extendedImageLoadState == LoadState.failed) {
+              return ExtendedImage.network(
+                dummyNetworkImage,
+                width: double.infinity,
+                height: 300,
+                fit: BoxFit.cover,
+                handleLoadingProgress: true,
+              );
+            }
+            return null;
+          },
         ),
       ),
     );
@@ -219,16 +202,14 @@ class _MusicPlayerPageState extends State<MusicPlayerPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Out Of Time",
+          currentSong?.trackName ?? "",
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(
-          height: 8,
-        ),
-        Text("The Weekends"),
+        SizedBox(height: 8),
+        Text(formatTrackArtists(currentSong?.trackArtistNames ?? [])),
       ],
     );
   }

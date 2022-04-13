@@ -1,10 +1,9 @@
-import 'dart:ui';
-
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sdab_jomreang/components/CustomErrorWidget.dart';
 import 'package:sdab_jomreang/components/LoadingWidget.dart';
+import 'package:sdab_jomreang/controllers/MusicPlayerController.dart';
 import 'package:sdab_jomreang/models/Music.dart';
 import 'package:sdab_jomreang/services/MusicService.dart';
 import 'package:sdab_jomreang/utils/Constant.dart';
@@ -12,7 +11,9 @@ import 'package:sdab_jomreang/views/AddMusicPage.dart';
 import 'package:sdab_jomreang/views/MusicPlayerPage.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -20,6 +21,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final musicService = MusicService();
+  final musicController = Get.find<MusicPlayerController>();
 
   @override
   Widget build(BuildContext context) {
@@ -61,21 +63,29 @@ class _HomePageState extends State<HomePage> {
             itemBuilder: (context, index) {
               final currentSong = songs[index];
               return ListTile(
-                onTap: () {
-
+                onTap: () async {
+                  if (currentSong.musicFileUrl != null) {
+                    await musicController.setCurrentSong(currentSong);
+                    Get.to(() => MusicPlayerPage());
+                  }
                 },
                 contentPadding: EdgeInsets.only(left: 8),
                 title: Text(currentSong.trackName ?? ""),
                 subtitle: Text(
                   formatTrackArtists(currentSong.trackArtistNames ?? []),
                 ),
-                trailing: IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.play_arrow,
-                    color: Colors.white,
-                  ),
-                ),
+                trailing: Obx(() {
+                  if (musicController.isLoading.value) {
+                    return CircularProgressIndicator();
+                  }
+                  return IconButton(
+                    onPressed: () {},
+                    icon: Icon(
+                      Icons.play_arrow,
+                      color: Colors.white,
+                    ),
+                  );
+                }),
                 leading: ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(8)),
                   child: ExtendedImage.network(
