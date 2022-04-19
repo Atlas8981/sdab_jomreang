@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-Music musicFromMap(String str) => Music.fromMap(json.decode(str));
+Song songFromMap(String str) => Song.fromMap(json.decode(str));
 
-String musicToMap(Music data) => json.encode(data.toMap());
+String songToMap(Song data) => json.encode(data.toMap());
 
-class Music {
-  Music({
+class Song {
+  Song({
     required this.trackName,
     required this.trackArtistNames,
     required this.albumName,
@@ -29,7 +29,7 @@ class Music {
   String? musicFileUrl;
   String? artworkFileUrl;
 
-  factory Music.fromMap(Map<String, dynamic> json) => Music(
+  factory Song.fromMap(Map<String, dynamic> json) => Song(
         trackName: json["trackName"],
         trackArtistNames:
             List<String>.from(json["trackArtistNames"].map((x) => x)),

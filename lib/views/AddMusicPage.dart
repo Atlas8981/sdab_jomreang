@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 import 'package:sdab_jomreang/components/MusicDataViewer.dart';
 import 'package:sdab_jomreang/services/MusicService.dart';
+import 'package:sdab_jomreang/utils/Constant.dart';
 
 class AddMusicPage extends StatefulWidget {
   const AddMusicPage({
@@ -20,6 +21,7 @@ class _AddMusicPageState extends State<AddMusicPage> {
   final musicService = MusicService();
   FilePickerResult? result;
   Metadata? metadata;
+  bool isVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -59,8 +61,15 @@ class _AddMusicPageState extends State<AddMusicPage> {
     if (result == null) {
       return;
     }
+    setState(() {
+      isVisible = true;
+    });
     final selectedMusicFile = result!.files[0];
-    musicService.addMusic(selectedMusicFile);
+    await musicService.addMusic(selectedMusicFile);
+    setState(() {
+      isVisible = false;
+    });
+    showToast("Done");
   }
 
   Future<void> openFilePicker() async {
@@ -86,15 +95,25 @@ class _AddMusicPageState extends State<AddMusicPage> {
   Widget highLevelWidget({required List<Widget> children}) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 8,
+      child: Stack(
+        children: [
+          Visibility(
+            visible: isVisible,
+            child: Center(
+              child: CircularProgressIndicator(),
             ),
-            ...children
-          ],
-        ),
+          ),
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 8,
+                ),
+                ...children
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -5,7 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_media_metadata/flutter_media_metadata.dart';
-import 'package:sdab_jomreang/models/Music.dart';
+import 'package:sdab_jomreang/models/Song.dart';
 import 'package:sdab_jomreang/utils/Constant.dart';
 
 class MusicService {
@@ -25,7 +25,7 @@ class MusicService {
     if (musicFileUrl == null) {
       return;
     }
-    final music = Music(
+    final music = Song(
       trackName: metadata.trackName,
       trackArtistNames: metadata.trackArtistNames,
       albumName: metadata.albumName,
@@ -38,6 +38,11 @@ class MusicService {
       artworkFileUrl: artworkUrl,
     );
     await uploadMusicData(music);
+  }
+
+  Future<DocumentReference> uploadMusicData(Song music) async {
+    final docRef = await db.collection("music").add(music.toMap());
+    return docRef;
   }
 
   Future<String?> uploadMusicFile(Metadata file) async {
@@ -72,15 +77,11 @@ class MusicService {
     return null;
   }
 
-  Future<DocumentReference> uploadMusicData(Music music) async {
-    return await db.collection("music").add(music.toMap());
-  }
-
   ///GET
-  Future<List<Music>?> getMusics() async {
+  Future<List<Song>?> getMusics() async {
     try {
       final querySnapshot = await db.collection(musicCollection).get();
-      return querySnapshot.docs.map((e) => Music.fromMap(e.data())).toList();
+      return querySnapshot.docs.map((e) => Song.fromMap(e.data())).toList();
     } catch (e) {
       print(e.toString());
     }
